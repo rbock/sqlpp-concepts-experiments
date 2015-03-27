@@ -46,7 +46,7 @@ int main()
 	test::TabPerson p;
 	test::TabFeature f;
 
-	for (const auto& row : db(select(all_of(p)).from(p).where(p.id > 7)))
+	for (const auto& row : db(select(all_of(p)).from('p').where(p.id > 7)))
 	{
 		int64_t id = row.id;
 		std::string name = row.name;

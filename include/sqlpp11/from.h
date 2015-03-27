@@ -28,7 +28,7 @@
 #define SQLPP_FROM_H
 
 #include <sqlpp11/table_ref.h>
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/no_data.h>
 #include <sqlpp11/interpretable_list.h>
 #include <sqlpp11/interpret_tuple.h>
@@ -163,7 +163,8 @@ namespace sqlpp
 
 				using _consistency_check = consistent_t;
 
-				template<typename... Tables>
+				template<Table... Tables>
+					requires UniqueTableNames<Tables...>()
 					auto from(Tables... tables) const
 					-> _new_statement_t<_check<Tables...>, from_t<void, from_table_t<Tables>...>>
 					{
