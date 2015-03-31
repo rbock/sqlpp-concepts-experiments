@@ -27,12 +27,12 @@
 #ifndef SQLPP_ALIAS_H
 #define SQLPP_ALIAS_H
 
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/serializer.h>
 
 namespace sqlpp
 {
-	template<typename Expression, typename AliasProvider>
+	template<typename Expression, AliasProvider Alias>
 		struct expression_alias_t
 		{
 			using _traits = make_traits<value_type_of<Expression>, tag::is_selectable, tag::is_alias>;
@@ -41,16 +41,16 @@ namespace sqlpp
 			static_assert(is_expression_t<Expression>::value, "invalid argument for an expression alias");
 			static_assert(not is_alias_t<Expression>::value, "cannot create an alias of an alias");
 
-			using _alias_t = typename AliasProvider::_alias_t;
+			using _alias_t = typename Alias::_alias_t;
 
 			Expression _expression;
 		};
 
-	template<typename Context, typename Expression, typename AliasProvider>
-		struct serializer_t<Context, expression_alias_t<Expression, AliasProvider>>
+	template<typename Context, typename Expression, AliasProvider Alias>
+		struct serializer_t<Context, expression_alias_t<Expression, Alias>>
 		{
 			using _serialize_check = serialize_check_of<Context, Expression>;
-			using T = expression_alias_t<Expression, AliasProvider>;
+			using T = expression_alias_t<Expression, Alias>;
 
 			static Context& _(const T& t, Context& context)
 			{

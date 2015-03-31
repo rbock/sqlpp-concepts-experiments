@@ -28,7 +28,7 @@
 #define SQLPP_VALUE_TYPE_FWD_H
 
 #include <sqlpp11/wrong.h>
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 
 namespace sqlpp
 {

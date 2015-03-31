@@ -31,7 +31,7 @@
 #include <sqlpp11/select_flags.h>
 #include <sqlpp11/result_row.h>
 #include <sqlpp11/statement_fwd.h>
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/parameter_list.h>
 #include <sqlpp11/expression.h>
 #include <sqlpp11/interpret_tuple.h>
@@ -80,22 +80,22 @@ namespace sqlpp
 			}
 		};
 
-	template<typename AliasProvider, typename Statement, typename... FieldSpecs>
+	template<AliasProvider Alias, typename Statement, typename... FieldSpecs>
 		struct cte_t;
 
-	template<typename AliasProvider>
+	template<AliasProvider Alias>
 		struct cte_ref_t;
 
-	template<typename AliasProvider, typename Statement, typename... FieldSpecs>
-		auto from_table(cte_t<AliasProvider, Statement, FieldSpecs...> t) -> cte_ref_t<AliasProvider>
+	template<AliasProvider Alias, typename Statement, typename... FieldSpecs>
+		auto from_table(cte_t<Alias, Statement, FieldSpecs...> t) -> cte_ref_t<Alias>
 		{
-			return cte_ref_t<AliasProvider>{};
+			return cte_ref_t<Alias>{};
 		}
 
-	template<typename AliasProvider, typename Statement, typename... FieldSpecs>
-		struct from_table_impl<cte_t<AliasProvider, Statement, FieldSpecs...>>
+	template<AliasProvider Alias, typename Statement, typename... FieldSpecs>
+		struct from_table_impl<cte_t<Alias, Statement, FieldSpecs...>>
 		{
-			using type = cte_ref_t<AliasProvider>;
+			using type = cte_ref_t<Alias>;
 		};
 
 
@@ -111,33 +111,33 @@ namespace sqlpp
 							>;
 		};
 
-	template<typename AliasProvider, typename Statement, typename ResultRow>
+	template<AliasProvider Alias, typename Statement, typename ResultRow>
 		struct make_cte_impl
 		{
 			using type = void;
 		};
 
-	template<typename AliasProvider, typename Statement, typename... FieldSpecs>
-		struct make_cte_impl<AliasProvider, Statement, result_row_t<void, FieldSpecs...>>
+	template<AliasProvider Alias, typename Statement, typename... FieldSpecs>
+		struct make_cte_impl<Alias, Statement, result_row_t<void, FieldSpecs...>>
 		{
-			using type = cte_t<AliasProvider, Statement, FieldSpecs...>;
+			using type = cte_t<Alias, Statement, FieldSpecs...>;
 		};
 
-	template<typename AliasProvider, typename Statement>
-		using make_cte_t = typename make_cte_impl<AliasProvider, Statement, get_result_row_t<Statement>>::type;
+	template<AliasProvider Alias, typename Statement>
+		using make_cte_t = typename make_cte_impl<Alias, Statement, get_result_row_t<Statement>>::type;
 
-	template<typename AliasProvider, typename Statement, typename... FieldSpecs>
-		struct cte_t: public member_t<cte_column_spec_t<FieldSpecs>, column_t<AliasProvider, cte_column_spec_t<FieldSpecs>>>...
+	template<AliasProvider Alias, typename Statement, typename... FieldSpecs>
+		struct cte_t: public member_t<cte_column_spec_t<FieldSpecs>, column_t<Alias, cte_column_spec_t<FieldSpecs>>>...
 		{
 			using _traits = make_traits<no_value_t, tag::is_cte, tag::is_table>; // FIXME: is table? really?
 			using _nodes = detail::type_vector<>;
-			using _required_ctes = detail::make_joined_set_t<required_ctes_of<Statement>, detail::type_set<AliasProvider>>;
+			using _required_ctes = detail::make_joined_set_t<required_ctes_of<Statement>, detail::type_set<Alias>>;
 			using _parameters = parameters_of<Statement>;
 
-			using _alias_t = typename AliasProvider::_alias_t;
-			constexpr static bool _is_recursive = detail::is_element_of<AliasProvider, required_ctes_of<Statement>>::value;
+			using _alias_t = typename Alias::_alias_t;
+			constexpr static bool _is_recursive = detail::is_element_of<Alias, required_ctes_of<Statement>>::value;
 
-			using _column_tuple_t = std::tuple<column_t<AliasProvider, cte_column_spec_t<FieldSpecs>>...>;
+			using _column_tuple_t = std::tuple<column_t<Alias, cte_column_spec_t<FieldSpecs>>...>;
 
 			template<typename... T>
 				using _check = logic::all_t<is_statement_t<T>::value...>;
@@ -146,7 +146,7 @@ namespace sqlpp
 
 			template<typename Rhs>
 				auto union_distinct(Rhs rhs) const
-				-> typename std::conditional<_check<Rhs>::value, cte_t<AliasProvider, cte_union_t<distinct_t, Statement, Rhs>, FieldSpecs...>, bad_statement>::type
+				-> typename std::conditional<_check<Rhs>::value, cte_t<Alias, cte_union_t<distinct_t, Statement, Rhs>, FieldSpecs...>, bad_statement>::type
 				{
 					static_assert(is_statement_t<Rhs>::value, "argument of union call has to be a statement");
 					static_assert(has_policy_t<Rhs, is_select_t>::value, "argument of union call has to be a select");
@@ -159,7 +159,7 @@ namespace sqlpp
 
 			template<typename Rhs>
 				auto union_all(Rhs rhs) const
-				-> typename std::conditional<_check<Rhs>::value, cte_t<AliasProvider, cte_union_t<all_t, Statement, Rhs>, FieldSpecs...>, bad_statement>::type
+				-> typename std::conditional<_check<Rhs>::value, cte_t<Alias, cte_union_t<all_t, Statement, Rhs>, FieldSpecs...>, bad_statement>::type
 				{
 					static_assert(is_statement_t<Rhs>::value, "argument of union call has to be a statement");
 					static_assert(has_policy_t<Rhs, is_select_t>::value, "argument of union call has to be a select");
@@ -177,7 +177,7 @@ namespace sqlpp
 
 			template<typename Flag, typename Rhs>
 				auto _union_impl(const std::true_type&, Rhs rhs) const
-				-> cte_t<AliasProvider, cte_union_t<Flag, Statement, Rhs>, FieldSpecs...>
+				-> cte_t<Alias, cte_union_t<Flag, Statement, Rhs>, FieldSpecs...>
 				{
 					return cte_union_t<Flag, Statement, Rhs>{_statement, rhs};
 				}
@@ -194,11 +194,11 @@ namespace sqlpp
 			Statement _statement;
 		};
 
-	template<typename Context, typename AliasProvider, typename Statement, typename... ColumnSpecs>
-		struct serializer_t<Context, cte_t<AliasProvider, Statement, ColumnSpecs...>>
+	template<typename Context, AliasProvider Alias, typename Statement, typename... ColumnSpecs>
+		struct serializer_t<Context, cte_t<Alias, Statement, ColumnSpecs...>>
 		{
 			using _serialize_check = serialize_check_of<Context, Statement>;
-			using T = cte_t<AliasProvider, Statement, ColumnSpecs...>;
+			using T = cte_t<Alias, Statement, ColumnSpecs...>;
 
 			static Context& _(const T& t, Context& context)
 			{
@@ -210,37 +210,37 @@ namespace sqlpp
 		};
 
 
-// The cte_t is displayed as AliasProviderName except within the with:
+// The cte_t is displayed as Alias except within the with:
 //    - the with needs the 
-//      AliasProviderName AS (ColumnNames) (select/union)
+//      Alias AS (ColumnNames) (select/union)
 // The result row of the select should not have dynamic parts
-	template<typename AliasProvider>
+	template<AliasProvider Alias>
 		struct cte_ref_t
 		{
 			using _traits = make_traits<no_value_t, tag::is_alias, tag::is_cte, tag::is_table>; // FIXME: is table? really?
 			using _nodes = detail::type_vector<>;
-			using _required_ctes = detail::make_type_set_t<AliasProvider>;
-			using _provided_tables = detail::type_set<AliasProvider>;
+			using _required_ctes = detail::make_type_set_t<Alias>;
+			using _provided_tables = detail::type_set<Alias>;
 
-			using _alias_t = typename AliasProvider::_alias_t;
+			using _alias_t = typename Alias::_alias_t;
 
 			template<typename Statement>
 				auto as(Statement statement)
-				-> make_cte_t<AliasProvider, Statement>
+				-> make_cte_t<Alias, Statement>
 				{
 					static_assert(required_tables_of<Statement>::size::value == 0, "common table expression must not use unknown tables");
-					static_assert(not detail::is_element_of<AliasProvider, required_ctes_of<Statement>>::value, "common table expression must not self-reference in the first part, use union_all/union_distinct for recursion");
+					static_assert(not detail::is_element_of<Alias, required_ctes_of<Statement>>::value, "common table expression must not self-reference in the first part, use union_all/union_distinct for recursion");
 					static_assert(is_static_result_row_t<get_result_row_t<Statement>>::value, "ctes must not have dynamically added columns");
 
 					return { statement };
 				}
 		};
 
-	template<typename Context, typename AliasProvider>
-		struct serializer_t<Context, cte_ref_t<AliasProvider>>
+	template<typename Context, AliasProvider Alias>
+		struct serializer_t<Context, cte_ref_t<Alias>>
 		{
 			using _serialize_check = consistent_t;
-			using T = cte_ref_t<AliasProvider>;
+			using T = cte_ref_t<Alias>;
 
 			static Context& _(const T& t, Context& context)
 			{
@@ -249,9 +249,9 @@ namespace sqlpp
 			}
 		};
 
-	template<typename AliasProvider>
-		auto cte(const AliasProvider&)
-		-> cte_ref_t<AliasProvider>
+	template<AliasProvider Alias>
+		auto cte(const Alias&)
+		-> cte_ref_t<Alias>
 		{
 			return {};
 		}

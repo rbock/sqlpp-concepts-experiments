@@ -28,7 +28,7 @@
 #define SQLPP_SERIALIZE_H
 
 #include <sqlpp11/serializer.h>
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 
 namespace sqlpp
 {

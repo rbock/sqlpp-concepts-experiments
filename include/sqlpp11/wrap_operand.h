@@ -30,7 +30,7 @@
 #include <string>
 #include <sqlpp11/wrap_operand_fwd.h>
 #include <sqlpp11/serializer.h>
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/basic_expression_operators.h>
 
 namespace sqlpp

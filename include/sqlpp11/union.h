@@ -30,7 +30,7 @@
 #include <sqlpp11/union_data.h>
 #include <sqlpp11/union_flags.h>
 #include <sqlpp11/statement_fwd.h>
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/parameter_list.h>
 #include <sqlpp11/expression.h>
 #include <sqlpp11/interpret_tuple.h>

@@ -60,6 +60,14 @@ namespace sqlpp
 		return detail::get_number_of_tables<Tables...>() == detail::get_number_of_unique_tables<Tables...>();
   }
 
+	template<typename T>
+	concept bool AliasProvider()
+	{
+		return requires(){
+			typename T::_name_t::template _member_t<int>;
+		};
+	}
+
 }
 
 #endif

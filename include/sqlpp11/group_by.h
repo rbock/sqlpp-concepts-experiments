@@ -28,7 +28,7 @@
 #define SQLPP_GROUP_BY_H
 
 #include <tuple>
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/expression.h>
 #include <sqlpp11/interpret_tuple.h>
 #include <sqlpp11/interpretable_list.h>

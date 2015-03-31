@@ -28,7 +28,7 @@
 #define SQLPP_SELECT_FLAG_LIST_H
 
 #include <tuple>
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/no_data.h>
 #include <sqlpp11/select_flags.h>
 #include <sqlpp11/detail/type_set.h>

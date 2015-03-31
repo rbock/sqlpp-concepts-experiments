@@ -30,7 +30,7 @@
 #include <sqlpp11/default_value.h>
 #include <sqlpp11/null.h>
 #include <sqlpp11/tvin.h>
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/serializer.h>
 #include <sqlpp11/detail/type_set.h>
 

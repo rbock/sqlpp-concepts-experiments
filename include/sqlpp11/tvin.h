@@ -29,7 +29,7 @@
 
 // TVIN: Trivial value is NULL
 
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/serialize.h>
 #include <sqlpp11/serializer.h>
 #include <sqlpp11/wrap_operand.h>

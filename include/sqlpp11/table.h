@@ -27,7 +27,7 @@
 #ifndef SQLPP_TABLE_H
 #define SQLPP_TABLE_H
 
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/table_alias.h>
 #include <sqlpp11/all_of.h>
 #include <sqlpp11/column.h>
@@ -52,8 +52,8 @@ namespace sqlpp
 		static_assert(sizeof...(ColumnSpec), "at least one column required per table");
 		using _required_insert_columns = typename detail::make_type_set_if<require_insert_t, column_t<Table, ColumnSpec>...>::type;
 		using _column_tuple_t = std::tuple<column_t<Table, ColumnSpec>...>;
-		template<typename AliasProvider>
-			using _alias_t = table_alias_t<AliasProvider, Table, ColumnSpec...>;
+		template<AliasProvider Alias>
+			using _alias_t = table_alias_t<Alias, Table, ColumnSpec...>;
 
 
 		template<typename T>
@@ -86,8 +86,8 @@ namespace sqlpp
 				return { *static_cast<const Table*>(this), t };
 			}
 
-		template<typename AliasProvider>
-			_alias_t<AliasProvider> as(const AliasProvider&) const
+		template<AliasProvider Alias>
+			_alias_t<Alias> as(const Alias&) const
 			{
 				return {*static_cast<const Table*>(this)};
 			}

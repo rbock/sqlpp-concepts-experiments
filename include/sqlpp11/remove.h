@@ -29,7 +29,7 @@
 
 #include <sqlpp11/statement.h>
 #include <sqlpp11/connection.h>
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/parameter_list.h>
 #include <sqlpp11/prepared_remove.h>
 #include <sqlpp11/noop.h>

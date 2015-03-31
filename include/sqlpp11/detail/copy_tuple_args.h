@@ -60,7 +60,7 @@ namespace sqlpp
 				static_assert(wrong_t<copy_tuple_args_impl>::value, "copy_tuple_args must be called with a tuple");
 			};
 
-		template<template<typename First, typename...> class Target, typename First, typename... Args>
+		template<template<typename, typename...> class Target, typename First, typename... Args>
 			struct copy_tuple_args_impl<Target, First, std::tuple<Args...>>
 			{
 				using type = Target<First, Args...>;
