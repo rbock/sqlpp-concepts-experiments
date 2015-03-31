@@ -28,7 +28,7 @@
 #define SQLPP_TEXT_H
 
 #include <sqlpp11/basic_expression_operators.h>
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/exception.h>
 #include <sqlpp11/concat.h>
 #include <sqlpp11/like.h>

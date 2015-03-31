@@ -43,7 +43,7 @@ namespace sqlpp
 			using _alias_t = NameType;
 		};
 
-	template<typename AliasProvider, typename FieldSpecTuple>
+	template<AliasProvider Alias, typename FieldSpecTuple>
 		struct multi_field_spec_t
 		{
 		};
@@ -62,10 +62,10 @@ namespace sqlpp
 							null_is_trivial_value_t<NamedExpr>::value>;
 			};
 
-		template<typename Select, typename AliasProvider, typename... NamedExprs>
-			struct make_field_spec_impl<Select, multi_column_alias_t<AliasProvider, NamedExprs...>>
+		template<typename Select, AliasProvider Alias, typename... NamedExprs>
+			struct make_field_spec_impl<Select, multi_column_alias_t<Alias, NamedExprs...>>
 			{
-				using type = multi_field_spec_t<AliasProvider, std::tuple<typename make_field_spec_impl<Select, NamedExprs>::type...>>;
+				using type = multi_field_spec_t<Alias, std::tuple<typename make_field_spec_impl<Select, NamedExprs>::type...>>;
 			};
 	}
 

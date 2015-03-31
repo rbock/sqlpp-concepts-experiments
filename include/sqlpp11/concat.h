@@ -27,7 +27,7 @@
 #ifndef SQLPP_CONCAT_H
 #define SQLPP_CONCAT_H
 
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/char_sequence.h>
 #include <sqlpp11/interpret_tuple.h>
 #include <sqlpp11/basic_expression_operators.h>

@@ -28,7 +28,7 @@
 #define SQLPP_INTO_H
 
 #include <sqlpp11/statement_fwd.h>
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/no_value.h>
 #include <sqlpp11/no_data.h>
 #include <sqlpp11/prepared_insert.h>

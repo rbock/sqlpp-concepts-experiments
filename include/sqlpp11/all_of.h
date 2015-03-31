@@ -38,8 +38,8 @@ namespace sqlpp
 		{
 			using _column_tuple_t = typename Table::_column_tuple_t;
 
-			template<typename AliasProvider>
-				detail::copy_tuple_args_t<multi_column_alias_t, AliasProvider, _column_tuple_t> as(const AliasProvider& alias)
+			template<AliasProvider Alias>
+				detail::copy_tuple_args_t<multi_column_alias_t, Alias, _column_tuple_t> as(const Alias& alias)
 				{
 					return multi_column(_column_tuple_t{}).as(alias);
 				}

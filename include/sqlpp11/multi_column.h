@@ -35,7 +35,7 @@
 
 namespace sqlpp
 {
-	template<typename AliasProvider, typename... Columns>
+	template<AliasProvider Alias, typename... Columns>
 		struct multi_column_alias_t;
 
 	template<typename Unused, typename... Columns>
@@ -60,8 +60,8 @@ namespace sqlpp
 			multi_column_t& operator=(multi_column_t&&) = default;
 			~multi_column_t() = default;
 
-			template<typename AliasProvider>
-				multi_column_alias_t<AliasProvider, Columns...> as(const AliasProvider&)
+			template<AliasProvider Alias>
+				multi_column_alias_t<Alias, Columns...> as(const Alias&)
 				{
 					return { *this };
 				}
@@ -69,7 +69,7 @@ namespace sqlpp
 			std::tuple<Columns...> _columns;
 		};
 
-	template<typename AliasProvider, typename... Columns>
+	template<AliasProvider Alias, typename... Columns>
 		struct multi_column_alias_t
 		{
 			using _traits = make_traits<no_value_t, tag::is_alias, tag::is_multi_column, tag::is_selectable>;
@@ -77,7 +77,7 @@ namespace sqlpp
 
 			static_assert(logic::all_t<is_selectable_t<Columns>::value...>::value, "multi_column parameters need to be named expressions");
 
-			using _alias_t = typename AliasProvider::_alias_t;
+			using _alias_t = typename Alias::_alias_t;
 
 			multi_column_alias_t(multi_column_t<void, Columns...> multi_column):
 				_columns(multi_column._columns)
@@ -112,11 +112,11 @@ namespace sqlpp
 			}
 		};
 
-	template<typename Context, typename AliasProvider, typename... Columns>
-		struct serializer_t<Context, multi_column_alias_t<AliasProvider, Columns...>>
+	template<typename Context, AliasProvider Alias, typename... Columns>
+		struct serializer_t<Context, multi_column_alias_t<Alias, Columns...>>
 		{
 			using _serialize_check = serialize_check_of<Context, Columns...>;
-			using T = multi_column_alias_t<AliasProvider, Columns...>;
+			using T = multi_column_alias_t<Alias, Columns...>;
 
 			static Context& _(const T& t, Context& context)
 			{

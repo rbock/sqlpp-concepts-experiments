@@ -27,7 +27,7 @@
 #ifndef SQLPP_EXTRA_TABLES_H
 #define SQLPP_EXTRA_TABLES_H
 
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/logic.h>
 #include <sqlpp11/policy_update.h>
 

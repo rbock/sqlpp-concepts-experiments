@@ -27,7 +27,7 @@
 #ifndef SQLPP_IN_H
 #define SQLPP_IN_H
 
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/char_sequence.h>
 #include <sqlpp11/boolean.h>
 #include <sqlpp11/in_fwd.h>

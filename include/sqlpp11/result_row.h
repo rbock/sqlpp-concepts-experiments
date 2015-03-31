@@ -65,11 +65,11 @@ namespace sqlpp
 				}
 		};
 
-		template<std::size_t index, typename AliasProvider, typename Db, typename... FieldSpecs>
-			struct result_field<Db, index, multi_field_spec_t<AliasProvider, std::tuple<FieldSpecs...>>>: 
-			public member_t<AliasProvider, result_row_impl<Db, detail::make_field_index_sequence<index, FieldSpecs...>, FieldSpecs...>>
+		template<std::size_t index, AliasProvider Alias, typename Db, typename... FieldSpecs>
+			struct result_field<Db, index, multi_field_spec_t<Alias, std::tuple<FieldSpecs...>>>: 
+			public member_t<Alias, result_row_impl<Db, detail::make_field_index_sequence<index, FieldSpecs...>, FieldSpecs...>>
 			{
-				using _multi_field = member_t<AliasProvider, result_row_impl<Db, detail::make_field_index_sequence<index, FieldSpecs...>, FieldSpecs...>>;
+				using _multi_field = member_t<Alias, result_row_impl<Db, detail::make_field_index_sequence<index, FieldSpecs...>, FieldSpecs...>>;
 
 				result_field() = default;
 

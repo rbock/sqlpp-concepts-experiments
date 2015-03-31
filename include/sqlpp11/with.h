@@ -30,7 +30,7 @@
 #include <sqlpp11/assignment.h>
 #include <sqlpp11/column_fwd.h>
 #include <sqlpp11/statement_fwd.h>
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/no_data.h>
 #include <sqlpp11/policy_update.h>
 #include <sqlpp11/parameter_list.h>

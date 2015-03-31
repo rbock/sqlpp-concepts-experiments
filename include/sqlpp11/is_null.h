@@ -28,7 +28,7 @@
 #define SQLPP_IS_NULL_H
 
 #include <sqlpp11/boolean.h>
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/char_sequence.h>
 #include <sqlpp11/detail/type_set.h>
 

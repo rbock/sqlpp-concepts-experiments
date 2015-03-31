@@ -27,7 +27,7 @@
 #ifndef SQLPP_BOOLEAN_EXPRESSION_H
 #define SQLPP_BOOLEAN_EXPRESSION_H
 
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/interpretable.h>
 
 namespace sqlpp

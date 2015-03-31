@@ -270,26 +270,26 @@ namespace sqlpp
 
 					using _dynamic_names_t = typename dynamic_select_column_list<Database>::_names_t;
 
-					template<typename AliasProvider>
+					template<AliasProvider Alias>
 						struct _deferred_table_t
 						{
 							using table = select_pseudo_table_t<_statement_t, Columns...>;
-							using alias = typename table::template _alias_t<AliasProvider>;
+							using alias = typename table::template _alias_t<Alias>;
 						};
 
-					template<typename AliasProvider>
-						using _table_t = typename _deferred_table_t<AliasProvider>::table;
+					template<AliasProvider Alias>
+						using _table_t = typename _deferred_table_t<Alias>::table;
 
-					template<typename AliasProvider>
-						using _alias_t = typename _deferred_table_t<AliasProvider>::alias;
+					template<AliasProvider Alias>
+						using _alias_t = typename _deferred_table_t<Alias>::alias;
 
-					template<typename AliasProvider>
-						_alias_t<AliasProvider> as(const AliasProvider& aliasProvider) const
+					template<AliasProvider Alias>
+						_alias_t<Alias> as(const Alias& aliasProvider) const
 						{
 							consistency_check_t<_statement_t>::_();
 							static_assert(_statement_t::_can_be_used_as_table(), "statement cannot be used as table, e.g. due to missing tables");
 							static_assert(logic::none_t<is_multi_column_t<Columns>::value...>::value, "cannot use multi-columns in sub selects");
-							return _table_t<AliasProvider>(_get_statement()).as(aliasProvider);
+							return _table_t<Alias>(_get_statement()).as(aliasProvider);
 						}
 
 					const _dynamic_names_t& get_dynamic_names() const

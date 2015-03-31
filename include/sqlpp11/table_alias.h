@@ -29,27 +29,27 @@
 
 #include <sqlpp11/column_fwd.h>
 #include <sqlpp11/interpret.h>
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/alias.h>
 #include <sqlpp11/detail/type_set.h>
 
 namespace sqlpp
 {
-	template<typename AliasProvider, typename Table, typename... ColumnSpec>
+	template<AliasProvider Alias, typename Table, typename... ColumnSpec>
 		struct table_alias_t:
-			public member_t<ColumnSpec, column_t<AliasProvider, ColumnSpec>>...
+			public member_t<ColumnSpec, column_t<Alias, ColumnSpec>>...
 	{
 		//FIXME: Need to add join functionality
 		using _traits = make_traits<value_type_of<Table>, tag::is_table, tag::is_alias, tag_if<tag::is_selectable, is_expression_t<Table>::value>>;
 
 		using _nodes = detail::type_vector<>;
 		using _required_ctes = required_ctes_of<Table>;
-		using _provided_tables = detail::type_set<AliasProvider>;
+		using _provided_tables = detail::type_set<Alias>;
 
 		static_assert(required_tables_of<Table>::size::value == 0, "table aliases must not depend on external tables");
 
-		using _alias_t = typename AliasProvider::_alias_t;
-		using _column_tuple_t = std::tuple<column_t<AliasProvider, ColumnSpec>...>;
+		using _alias_t = typename Alias::_alias_t;
+		using _column_tuple_t = std::tuple<column_t<Alias, ColumnSpec>...>;
 
 		table_alias_t(Table table):
 			_table(table)
@@ -58,11 +58,11 @@ namespace sqlpp
 		Table _table;
 	};
 
-	template<typename Context, typename AliasProvider, typename Table, typename... ColumnSpec>
-		struct serializer_t<Context, table_alias_t<AliasProvider, Table, ColumnSpec...>>
+	template<typename Context, AliasProvider Alias, typename Table, typename... ColumnSpec>
+		struct serializer_t<Context, table_alias_t<Alias, Table, ColumnSpec...>>
 		{
 			using _serialize_check = serialize_check_of<Context, Table>;
-			using T = table_alias_t<AliasProvider, Table, ColumnSpec...>;
+			using T = table_alias_t<Alias, Table, ColumnSpec...>;
 
 			static Context& _(const T& t, Context& context)
 			{

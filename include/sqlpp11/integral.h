@@ -29,7 +29,7 @@
 
 #include <cstdlib>
 #include <sqlpp11/basic_expression_operators.h>
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/exception.h>
 #include <sqlpp11/value_type.h>
 #include <sqlpp11/assignment.h>
@@ -121,14 +121,12 @@ namespace sqlpp
 		struct expression_operators<Base, integral>: public basic_expression_operators<Base, integral>
 	{
 		template<typename T>
-			using _is_valid_operand = is_valid_operand<integral, T>;
+			using _is_valid_operand = is_valid_operand<integral, wrap_operand_t<T>>;
 
 		template<typename T>
+			requires(_is_valid_operand<T>::value)
 			plus_t<Base, value_type_t<T>, wrap_operand_t<T>> operator +(T t) const
 			{
-				using rhs = wrap_operand_t<T>;
-				static_assert(_is_valid_operand<rhs>::value, "invalid rhs operand");
-
 				return { *static_cast<const Base*>(this), {t} };
 			}
 

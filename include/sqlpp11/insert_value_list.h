@@ -27,7 +27,7 @@
 #ifndef SQLPP_INSERT_VALUE_LIST_H
 #define SQLPP_INSERT_VALUE_LIST_H
 
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/logic.h>
 #include <sqlpp11/assignment.h>
 #include <sqlpp11/interpretable_list.h>

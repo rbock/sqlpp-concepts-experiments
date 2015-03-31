@@ -28,7 +28,7 @@
 #define SQLPP_INTERPRET_TUPLE_H
 
 #include <tuple>
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/serialize.h>
 #include <sqlpp11/detail/index_sequence.h>
 

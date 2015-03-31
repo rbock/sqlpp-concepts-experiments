@@ -32,7 +32,7 @@
 #include <sqlpp11/default_value.h>
 #include <sqlpp11/null.h>
 #include <sqlpp11/sort_order.h>
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/assignment.h>
 #include <sqlpp11/expression.h>
 #include <sqlpp11/serializer.h>
@@ -77,8 +77,8 @@ namespace sqlpp
 			return _table{};
 		}
 
-		template<typename alias_provider>
-			expression_alias_t<column_t, alias_provider> as(const alias_provider&) const
+		template<AliasProvider Alias>
+			expression_alias_t<column_t, Alias> as(const Alias&) const
 			{
 				return { *this };
 			}

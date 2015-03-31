@@ -27,7 +27,7 @@
 #ifndef SQLPP_JOIN_H
 #define SQLPP_JOIN_H
 
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/on.h>
 #include <sqlpp11/noop.h>
 

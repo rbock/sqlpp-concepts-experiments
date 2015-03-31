@@ -30,7 +30,7 @@
 #include <cstdlib>
 #include <ostream>
 #include <sqlpp11/basic_expression_operators.h>
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/exception.h>
 #include <sqlpp11/tvin.h>
 #include <sqlpp11/result_field.h>

@@ -27,7 +27,7 @@
 #ifndef SQLPP_USING_H
 #define SQLPP_USING_H
 
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/interpretable_list.h>
 #include <sqlpp11/interpret_tuple.h>
 #include <sqlpp11/detail/type_set.h>

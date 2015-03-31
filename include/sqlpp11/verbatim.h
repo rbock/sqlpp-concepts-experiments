@@ -28,7 +28,7 @@
 #define SQLPP_VERBATIM_H
 
 #include <sqlpp11/no_value.h>
-#include <sqlpp11/type_traits.h>
+#include <sqlpp11/concepts.h>
 #include <sqlpp11/serialize.h>
 
 namespace sqlpp
